@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mappers.board">
+	
+	<!-- 글작성 -->
+	<insert id="write" parameterType="BoardDTO">
+		INSERT INTO board (bnum, btitle, bid, bnickname, bhit, bcontent) VALUES 
+		(boardnum_seq.nextval, #{btitle}, #{bid}, #{bnickname}, 0, #{bcontent})
+	  	
+    	<selectKey keyProperty="idx" resultType="Integer" order="AFTER"> 
+    		SELECT boardnum_seq.currval FROM board WHERE ROWNUM = 1
+    	</selectKey>
+	</insert>
+	
+	<!-- 글수정 -->
+	<update id="modify">
+		update board set btitle=#{btitle}, bcontent=#{bcontent}, budate=sysdate
+		where bnum = #{bnum}
+	</update>
+	
+	<!-- 글삭제 -->
+	<delete id="delete">
+		DELETE FROM board WHERE bnum = #{bnum}
+	</delete>
+	
+	<!-- 글보기 -->
+	<select id="view" resultType="BoardDTO">
+		SELECT files.*, bnum, btitle, bid, bnickname, bcdate, budate, bgood, bbad, bhit, bcontent, btype FROM board
+		LEFT JOIN files ON files.target_srl = board.bnum 
+		WHERE bnum = #{bnum} AND files.type = 'board'
+	</select>
+	
+	<!-- 글정보 -->
+	<select id="info" resultType="BoardDTO">
+		SELECT *
+			from board
+		 where bnum = #{bnum}
+	</select>
+	
+	<!-- 조회수 증가 -->
+	<update id="updateHit">
+		update board set bhit=bhit+1
+							 where bnum=#{bnum}
+	</update>
+	
+	<!-- 조회수 로그 -->
+	<insert id="hitLog" parameterType="Map">
+		insert into count_Log(type,num,id,hitYn) 
+				 values(#{type},#{num},#{id},'Y')
+	</insert>
+	
+	<!-- 조회수 로그 체크 -->
+	<select id="hitLogChk" parameterType="Map" resultType="int">
+		select count(*) from count_Log 
+								where type = #{type}
+               	  and num = #{num}
+								  and id = #{id}
+								  and hitYn = #{hitYn}
+	</select>
+	
+	<!-- 추천 비추천 -->
+	<update id="goodOrBad" parameterType="Map">
+		<choose>
+			<!-- 추천 -->
+			<when test="goodOrBad == 'good'">
+				update board set bgood= bgood + 1 where bnum=#{bnum}
+			</when>
+			
+			<!-- 비추천 -->
+			<when test="goodOrBad == 'bad'">
+				update board set bbad= bbad + 1 where bnum=#{bnum}
+			</when>
+		</choose>
+	</update>
+
+	
+	<!-- 추천 비추천 로그 -->
+	<update id="goodOrBadLog" parameterType="Map">
+		update count_Log set count_type = #{count_type}
+		where type =#{type} and  num = #{num} and id = #{id} 
+	</update>
+	
+	<!-- 글목록 기본 -->
+	<select id="lsitOld" resultType="BoardDTO">
+		SELECT bnum,btitle,bid,bnickname,bcdate,budate,
+			     bgood,bbad,bhit,bcontent
+		  FROM (select * from board order by bnum desc)
+	</select>
+	
+	<!-- 글목록 페이징 -->
+	<select id="list" resultType="BoardDTO">
+		SELECT t2.*, files.* FROM 
+		(SELECT row_number() over(ORDER BY bnum DESC) AS num, t1.* from board t1) t2 
+		LEFT JOIN files ON files.target_srl = t2.bnum 
+		WHERE num between #{startRec} and #{endRec} AND files.type = 'board' 
+		<if test="best != null and best != ''">
+    		AND t2.bgood > #{best}
+    	</if>
+	</select>
+	
+	<!-- 게시글 총계 -->
+	<select id="totalRec" resultType="Integer">
+		SELECT count(*) totalRec from board 
+	</select>
+	
+	<!-- 검색목록 -->
+	<select id="searchList" resultType="BoardDTO">
+		select t2.*
+		  from (select row_number() over (order by bnum) as num, t1.*
+							from board t1
+						 where bnum > 0
+		<bind name="keyword" value="'%'+keyword+'%'"/>				  
+		<choose>
+			<!-- 제목+내용 -->
+			<when test="searchType == 'TC'.toString()">
+				and btitle like #{keyword} or bcontent like #{keyword}
+			</when>
+			
+			<!-- 제목 -->
+			<when test="searchType == 'T'.toString()">
+				and btitle like #{keyword} 
+			</when>
+			
+			<!-- 내용 -->
+			<when test="searchType == 'C'.toString()">
+				and bcontent like #{keyword} 	
+			</when>
+			
+			<!-- 닉네임 -->
+			<when test="searchType == 'N'.toString()">
+				and bnickname like #{keyword}
+			</when>
+			
+			<!-- 아이디 -->
+			<when test="searchType == 'I'.toString()">
+				and bid like #{keyword} 
+			</when>
+			
+			<!-- 제목  -->
+			<otherwise>
+				and btitle like #{keyword} 
+			</otherwise>
+		</choose>
+			)t2 
+			where num between #{startRecord} and #{endRecord} 
+	</select>
+	
+	<!-- 검색 총계 -->
+	<select id="searchTotalRec" resultType="Integer">
+		select count(*) totalRec
+		  from (select row_number() over (order by bnum desc) as num, t1.*
+							from board t1
+						 where bnum > 0
+		<bind name="keyword" value="'%'+keyword+'%'"/>				  
+		<choose>
+			<!-- 제목+내용 -->
+			<when test="searchType == 'TC'.toString()">
+				and btitle like #{keyword} or bcontent like #{keyword}
+			</when>
+			
+			<!-- 제목 -->
+			<when test="searchType == 'T'.toString()">
+				and btitle like #{keyword} 
+			</when>
+			
+			<!-- 내용 -->
+			<when test="searchType == 'C'.toString()">
+				and bcontent like #{keyword} 	
+			</when>
+			
+			<!-- 닉네임 -->
+			<when test="searchType == 'N'.toString()">
+				and bnickname like #{keyword}
+			</when>
+			
+			<!-- 아이디 -->
+			<when test="searchType == 'I'.toString()">
+				and bid like #{keyword} 
+			</when>
+			
+			<!-- 제목 +내용 +작성자 -->
+			<otherwise>
+				and btitle like #{keyword} or bcontent like #{keyword} or bid like #{keyword}
+			</otherwise>
+		</choose>
+			)t2 
+	</select>
+	
+	<!-- 인기글 -->
+	<select id="best" resultType="BoardDTO">
+		select * from board where bgood > 50 order by bgood asc
+	</select>
+	
+</mapper>

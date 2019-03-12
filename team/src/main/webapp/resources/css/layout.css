@@ -1,0 +1,382 @@
+#modal_background {
+    background-color: black;
+    opacity: 0.7;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 9999;
+	display: none;
+}
+._scroll_lock {
+    position: fixed;
+    overflow-y: scroll;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+._fix_header {
+    position: fixed;
+    width: 100% !important;
+    padding: 0px 14px;
+    top: 0px;
+    z-index: 999999;
+	height: 72px !important;
+    background-color: #424242;
+    opacity: 0.7;
+}
+#blur_background {
+    position: absolute;
+    z-index: -1;
+    top: 0px;
+    width: 100%;
+    height: 453px;
+    filter: blur(2px);
+    -webkit-filter: blur(2px);
+    background: url(https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500);
+    background-size: cover;
+    opacity: 0.8;
+}
+
+/* login */
+#login_panel {
+	width: 500px;
+    height: 600px;
+    position: fixed;
+    background-color: #fff;
+    z-index: 9999;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    top: 160px;
+    border-radius: 3px;
+    -webkit-box-shadow: 10px 10px 104px -6px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 104px -6px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 104px -6px rgba(0,0,0,0.75);
+	display: none;
+}
+#login_panel > .login_content {
+    padding: 57px;
+    height: 600px;
+}
+#login_panel > .login_content > h1 {
+	padding: 0px;
+	margin: 0px;
+    color: #206fd4;
+}
+#login_panel > .login_content > .login_form {
+	padding: 30px 0px;
+}
+#login_panel > .login_content > .login_form > form > .item {
+	
+}
+#login_panel > .login_content > .login_form > form > .item > label {
+	width: 100%;
+    display: -webkit-box;
+	padding: 10px 0px;
+    font-weight: bold;
+    font-size: 15px;
+}
+#login_panel > .login_content > .login_form > form > .item > input[type="text"],
+#login_panel > .login_content > .login_form > form > .item > input[type="password"] {
+    background-color: #d0d0d0;
+    border: none;
+    padding: 12px 0px;
+    width: 100%;
+    border-radius: 3px;
+}
+#login_panel > .login_content > .login_form > form > .rem {
+	margin: 23px 0px;
+}
+#login_panel > .login_content > .login_form > form > .login_submit {
+	
+}
+#login_panel > .login_content > .login_form > form > .login_submit > input[type="submit"] {
+    background-color: #3283f7;
+    border: none;
+    padding: 13px 0px;
+    width: 100%;
+    border-radius: 3px;
+    margin-top: 27px;
+    color: #fff;
+}
+.find {
+ 	margin-top:20px;
+ 	border-top:1px solid #ccc;
+ 	line-height: 14px;
+  	padding-top: 20px;
+ 	 	text-align: center;
+  	color: #8e8e8e;
+ }
+ 
+ #findId, #findPw {
+ 	color:#ccc;
+ }   
+ 
+ .bar {
+  display: inline-block;
+  width: 1px;
+  height: 13px;
+  margin: 0 4px;
+  text-indent: -999em;
+  background: #e4e4e5;
+  }
+  
+  /*  */
+
+#header_section {
+	position:relative;
+	width: 100%;
+	height: 453px;
+	background-color: #e80521;
+	background-color: transparent;
+}
+#menu_section {
+	height: 72px;
+}
+.content_section {
+    display: flow-root;
+    position: relative;
+}
+
+.content_section #outer {
+	overflow: hidden;
+}
+#menu_section > .menu_content, #category_product_section, .header_content, .content_section ,.footer_content {
+	width: 1080px;
+	margin: 0px auto;
+}
+#menu_section > .menu_content {
+	height: 72px;
+/*//S*/
+    position: fixed;
+    width: 1080px;
+    height: 200px;
+    z-index: 9999;
+    margin: 5% auto;
+    margin-top: 0px;
+    left: 0;
+    right: 0;
+/*//E*/
+}
+.header_content {
+	padding-top: 71px;
+}
+#menu_section > .menu_content > .logo {
+    float: left;
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    margin: 23px 11px;
+}
+#menu_section > .menu_content > #menu_nav {
+	
+}
+
+/* Menu Item Section */
+
+#menu_section > .menu_content > #menu_nav > #menu_item_section {
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+}
+#menu_section > .menu_content > #menu_nav > #menu_item_section > li {
+	float: left;
+    color: #fff;
+    padding: 25px 23px;
+}
+#menu_section > .menu_content > #menu_nav > #menu_item_section > li:hover {
+	box-shadow: inset 0 0px 1px white, inset 0px -3px 22px white;
+}
+
+/* Search Form */
+
+#menu_section > .menu_content > .search_content {
+	float: right;
+    position: relative;
+}
+
+#menu_section > .menu_content > .search_content > .search_form {
+	position: absolute;
+	top: 80px;
+	right: 0px;
+	display: none;
+   -prefix-animation: slide 1s ease 3.5s forwards;
+}
+
+@-prefix-keyframes slide {
+  from {height: 0;}
+  to {height: 300px;}
+}
+
+#menu_section > .menu_content > .search_content > .search_form > form {
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    -webkit-box-shadow: 3px 4px 73px -16px rgba(0,0,0,0.75);
+    -moz-box-shadow: 3px 4px 73px -16px rgba(0,0,0,0.75);
+    box-shadow: 3px 4px 73px -16px rgba(0,0,0,0.75);
+}
+#menu_section > .menu_content > .search_content > .search_form > form > input[type="text"] {
+	border: none;
+}
+/*  */
+
+
+#menu_section > .menu_content > .login_section {
+  color: #fff;
+  font-size: 16px;
+	cursor: pointer;
+}
+#menu_section > .menu_content > .isLogin {
+  color: #fff;
+  font-size: 16px;
+	cursor: pointer;
+}
+#menu_section > .menu_content > .search_content > .search_section {
+  color: #fff;
+  font-size: 16px;
+	cursor: pointer;
+}
+
+#menu_section > .menu_content > .search_content > .search_section > i {
+    padding: 27px;
+}
+
+
+/* Category */
+
+#header_section > #category_product {
+	position: absolute;
+	bottom: 0px;
+	height: 90px;
+    width: 100%;
+    /*border-top: 1px solid #ff6262;*/
+    border-radius: 1px;
+    box-shadow: 12px -3px 6px 0px rgba(0,0,0,0.3);
+}
+#header_section > #category_product > #category_product_section {
+	left: 0; 
+	right: 0; 
+	margin-left: auto; 
+	margin-right: auto; 
+}
+#header_section > #category_product > #category_product_section > .category_product_content {
+	
+}
+
+/* Category Item */
+
+.btn_product_category, .btn_product_brand, .btn_submit_category {
+    height: 59px;
+    border: none;
+    background-color: #fff;
+    margin: 15px 15px 15px 0px;
+    border-radius: 7px;
+	font-size: 21px;
+	text-align: left;
+    padding: 0px 17px;
+}
+.btn_product_category {
+    width: 50%;
+}
+.btn_product_brand {
+    width: 25%;
+}
+.btn_submit_category {
+	width: 10%;
+	float: right;
+	color:red;
+}
+.login_section {
+    color: #fff;
+    float: right;
+    margin: 26px 8px;
+}
+.isLogin {
+    color: #fff;
+    float: right;
+    margin: 26px 8px;
+}
+
+#item_section {
+    width: 100%;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    z-index: 1;
+    display: -webkit-box;
+}
+#item_section > #outer > #widget_section > .item_lim {
+	height: 365px;
+	overflow:hidden;
+	float:left;
+    width: 100%;
+}
+#item_section > #outer > #widget_section > .item_lim {
+    transform: translate3d(0px, 0px, 0px);
+    transition: all 0.25s ease 0s;
+}
+
+#item_section > #outer > #widget_section {
+    width: 100%;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    z-index: 1;
+    height: 500px;
+    display: -webkit-box;
+	transition: all 0.25s ease 0s;
+}
+#item_section {
+    transition: all 0.25s ease 0s;
+}
+#item_section > #outer > #widget_section > .item_lim > .item {
+	background: url('https://www.lwt.co.kr/datas/factory/main_img/006059');
+    background-size: cover;
+    float: left;
+    width: 330px;
+    height: 170px;
+    margin-right: 21px;
+    border: 1px solid #e0e0e0;
+	margin-bottom: 25px;
+}
+#widget_section {
+    width: 100%;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    z-index: 1;
+    height: 500px;
+    display: -webkit-box;
+}
+/* Header Content */
+ 
+#menu_section > .header_content > .main_background {
+	background: url('main-visual@2x.aa84676.png');
+	height: 291px;
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: contain;
+}
+#menu_section > .header_content > .text_content {
+    float: left;
+    position: absolute;
+    top: 153px;
+}
+#menu_section > .header_content > .text_content #header {
+	color: #fff;
+	font-size: 31px;
+    font-family: fantasy;
+}
+
+#footer_section {
+	width: 100%;
+	height: 300px;
+    background-color: #3a3a3a;
+}
+#footer_section > .footer_content > .logo {
+    width: 30%;
+    height: 300px;
+    line-height: 104px;
+    padding: 10px;
+    color: #fff;
+}

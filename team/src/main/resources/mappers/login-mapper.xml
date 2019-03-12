@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mappers.login">
+
+    <!-- 회원 정보 존재 유무 --> 
+    <select id="isExist" parameterType="String" resultType="int">
+        select count(*) from member where id=#{id}
+    </select>
+
+    <!-- 정상회원 체크 -->   
+    <select id="isMember" parameterType="Map" resultType="int">
+    	select count(*) from member where id=#{id} and pw=#{pw}
+    </select>
+
+    <!-- 로그인 -->   
+    <select id="login" parameterType="Map" resultType="MemberDTO">
+    	select * from member where id=#{id} and pw=#{pw}
+    </select>
+
+    <!-- 아이디 찾기 --> 
+    <select id="findId" parameterType="Map" resultType="MemberDTO">
+    	select * from member where name=#{name} and phone=#{phone}
+    </select>
+      
+    <!-- 비밀번호 찾기 -->   
+    <select id="findPw" parameterType="Map" resultType="MemberDTO">
+    	select * from member where id=#{id} and phone=#{phone} and birth=#{birth}
+    </select>
+    
+
+</mapper>

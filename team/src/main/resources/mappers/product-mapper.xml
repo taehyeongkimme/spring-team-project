@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="productDAO">
+
+    <select id="getProductList" resultType="ProductDTO">
+    	SELECT t2.*, files.* FROM (select row_number() over(order by pnum asc) as num, t1.* from product t1) t2 
+    	LEFT JOIN files ON files.target_srl = t2.pnum 
+    	WHERE num between #{startRec} and #{endRec}
+    </select>
+    
+    <select id="productdto" resultType="ProductDTO">
+    SELECT t2.*, files.* FROM (select row_number() over(order by pnum desc) as num,t1.* from product t1) t2 
+    	LEFT JOIN files ON files.target_srl = t2.pnum 
+    	WHERE t2.pgroup = #{pgroup} AND num between 1 and 10 ORDER BY pnum desc
+    </select>
+    
+    <select id="dispProduct" resultType="ProductDTO" flushCache="true">
+  	  	SELECT * from product LEFT JOIN files ON files.target_srl = product.pnum WHERE pnum = ${pnum}
+    </select> 
+    
+    <insert id="insertInsertedFile">
+    	INSERT INTO files (target_srl, type, sourcename, originname) VALUES (#{target_srl}, #{type}, #{sourcename}, #{originname})
+    </insert>
+    
+    <select id="totalRec" resultType="int">
+    	SELECT count(*) FROM product
+    </select>
+    
+    <insert id="insertProduct" parameterType="com.kh.myapp.product.dto.ProductDTO">
+    	INSERT INTO product (ptype, pnum, pname, ptitle, pid, pnickname, pcdate, pcontent
+    	
+    	<if test="allergy != null and allergy != ''">
+    		, allergy
+    	</if>
+    	<if test="price != null and price != ''">
+    		, price
+    	</if>
+    	<if test="pstore != null and pstore != ''">
+    		, pstore
+    	</if>
+    	<if test="pgroup != null and pgroup != ''">
+    		, pgroup
+    	</if>
+    	
+    	) values ('b', product_seq.nextval, #{pname}, #{ptitle}, #{pid}, #{pnickname}, sysdate, #{pcontent}
+    	
+    	
+    	<if test="allergy != null and allergy != ''">
+    		,#{allergy}
+    	</if>
+    	<if test="price != null and price != ''">
+    		,#{price}
+    	</if>
+    	<if test="pstore != null and pstore != ''">
+    		,#{pstore}
+    	</if>
+    	<if test="pgroup != null and pgroup != ''">
+    		,#{pgroup}
+    	</if>
+    	
+    	)
+    	
+    	<selectKey keyProperty="idx" resultType="Integer" order="AFTER"> 
+    		SELECT product_seq.currval FROM product WHERE ROWNUM = 1
+    	</selectKey>
+    </insert>
+    
+    <delete id="deleteProduct">
+    	DELETE FROM product WHERE pnum = #{pnum}
+    </delete>
+    
+    <update id="modifyProduct" parameterType="ProductDTO">
+    	UPDATE product SET ptitle = #{ptitle}, pcdate = sysdate, pcontent = #{pcontent} 
+    	
+    	<if test="allergy != null and allergy != ''">
+    		, allergy = #{allergy}
+    	</if>
+    	<if test="price != null and price != ''">
+    		, price = #{price}
+    	</if>
+    	<if test="pstore != null and pstore != ''">
+    		, pstore = #{pstore}
+    	</if>
+    	<if test="pgroup != null and pgroup != ''">
+    		, pgroup = #{pgroup}
+    	</if>
+    	
+    	WHERE pnum = #{pnum}
+    </update>
+    
+    <update id="selectProductWithoutAllergy">
+    	SELECT * FROM product WHERE allergy NOT LIKE '%'||#{allergy}||'%' ROWNUM <![CDATA[ < ]]>= #{endRecord} AND ROWNUM >= #{startRecord}
+    </update>
+    
+    <select id="selectProductByOptionCount" parameterType="ProductDTO" resultType="int">
+    	SELECT count(*) FROM 
+    	(SELECT row_number() over (ORDER BY pnum DESC) as num, 
+    	t1.* FROM product t1 WHERE 
+    	
+    	pnum > 0
+    	<if test="allergy != null and allergy != ''">
+    		AND allergy = #{allergy} 
+    	</if>
+    	<if test="price != null and price != '' and price != 0">
+    		AND price = #{price}  
+    	</if>
+    	<if test="pstore != null and pstore != ''">
+    		AND pstore = #{pstore}  
+    	</if>
+    	<if test="pgroup != null and pgroup != ''">
+    		AND pgroup = #{pgroup}  
+    	</if>
+    	<if test="ptitle != null and ptitle != ''">
+    		AND ptitle = #{ptitle}  
+    	</if>
+    	<if test="pnickname != null and pnickname != ''">
+    		AND pnickname = #{pnickname}  
+    	</if>
+    	<if test="pid != null and pid != ''">
+    		AND pid = #{pid}  
+    	</if>
+    	<if test="ptitle != null and ptitle != ''">
+    		AND ptitle LIKE '%'||#{ptitle}||'%' 
+    	</if>
+    	<if test="pcontent != null and pcontent != ''">
+    		AND pcontent LIKE '%'||#{pcontent}||'%' 
+    	</if>
+    	)t2
+    </select>
+    
+    <select id="selectProductByOption" parameterType="ProductDTO" resultType="ProductDTO">
+    	SELECT t2.*, files.* FROM 
+    	(SELECT row_number() over (ORDER BY pnum DESC) as num, 
+    	t1.* FROM product t1 WHERE 
+    	pnum > 0
+    	<if test="allergy != null and allergy != ''">
+    		AND allergy = #{allergy} 
+    	</if>
+    	<if test="price != null and price != '' and price != 0">
+    		AND price = #{price}  
+    	</if>
+    	<if test="pstore != null and pstore != ''">
+    		AND pstore = #{pstore}  
+    	</if>
+    	<if test="pgroup != null and pgroup != ''">
+    		AND pgroup = #{pgroup}  
+    	</if>
+    	<if test="ptitle != null and ptitle != ''">
+    		AND ptitle = #{ptitle}  
+    	</if>
+    	<if test="pnickname != null and pnickname != ''">
+    		AND pnickname = #{pnickname}  
+    	</if>
+    	<if test="pid != null and pid != ''">
+    		AND pid = #{pid}  
+    	</if>
+    	<if test="ptitle != null and ptitle != ''">
+    		AND ptitle LIKE '%'||#{ptitle}||'%' 
+    	</if>
+    	<if test="pcontent != null and pcontent != ''">
+    		AND pcontent LIKE '%'||#{pcontent}||'%' 
+    	</if>
+    	)t2 LEFT JOIN files ON files.target_srl = t2.pnum where num between #{startRecord} and #{endRecord} ORDER BY pnum desc
+    	
+    </select>
+    
+    <select id="selectProductBySingleOption">
+    	SELECT * FROM product WHERE pnum = #{pnum}
+		<choose>
+			<when test="option == 'price'.toString()">
+				AND price > ${data} 
+	    	</when>
+			<when test="option == 'pgroup'.toString()">
+				AND pgroup = `${data}`
+	    	</when>
+			<when test="option == 'pstore'.toString()">
+				AND pstore = `${data}`
+	    	</when>
+			<when test="option == 'alerge'.toString()">
+				AND alerge = `${data}`
+	    	</when>
+    	</choose>
+    	
+    	AND ROWNUM <![CDATA[ < ]]>= #{endRecord} AND ROWNUM >= #{startRecord}  ORDER BY pnum desc
+    </select>
+    
+</mapper>

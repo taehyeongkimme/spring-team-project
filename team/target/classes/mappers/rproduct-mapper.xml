@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mappers.rproduct">
+
+<!-- 댓글 등록 -->
+	<insert id="write" parameterType="RproductDTO">
+		insert into productreply (rnum,pnum,id,nickname,content)
+		values(productreplynum_seq.nextval,#{pnum},#{id},#{nickname},#{content})
+	</insert>
+
+<!-- listOld -->
+	<select id="listOld" resultType="RproductDTO">
+		select rnum, pnum, id, nickname, cdate, udate, content
+		from productreply where pnum = #{pnum}
+	</select>
+
+<!-- 댓글 수정 -->
+	<update id="modify" parameterType="RproductDTO">
+		update productreply set udate=sysdate, content=#{content}
+		where rnum=#{rnum} 
+	</update>
+
+<!-- 댓글 삭제 -->
+	<delete id="delete">
+		delete from productreply where rnum=#{rnum}
+	</delete>
+
+<!-- 댓글 총계 -->
+	<select id="replyTotalRec" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(*) totalRec from productreply where pnum=#{pnum}
+	</select>
+
+
+
+
+</mapper>

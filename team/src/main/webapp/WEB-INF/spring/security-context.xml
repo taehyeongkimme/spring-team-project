@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:sec="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<bean id="memberSvcImpl" class="com.kh.myapp.member.service.MemberSvcImpl"/>
+
+<!-- 권한접근 예외발생시 실행하는 bean -->
+<bean id="customAccessDenyed" class="com.kh.myapp.common.CustomAccessDenyHandler"/>
+<bean id="customPasswordEncoder" class="com.kh.myapp.common.CustomNoOpPasswordEncoder"/>
+<bean id="loginFailureHandler" class="com.kh.myapp.common.LoginFailureHandler">
+	 <property name="defaultFailureUrl" value="/login/loginForm?error"/>
+</bean>
+	
+
+<sec:http use-expressions="true">
+	<!-- crsf 적용안함 -->
+	<sec:csrf disabled="true"/>
+
+	<!-- 로그인 -->
+	<sec:form-login login-page="/login/loginForm" 
+									username-parameter="id" 
+									password-parameter="pw" 
+									authentication-failure-handler-ref="loginFailureHandler"/>
+									
+		
+	<!-- 로그아웃 -->
+	<sec:logout logout-url="/login/logout"
+							logout-success-url="/login/loginForm?logout"
+							invalidate-session="true" delete-cookies="remember-me,JSESSION_ID"/>
+													
+	<!-- 자동 로그인 60*60*7 = 604800 -->
+	<sec:remember-me data-source-ref="dataSource"
+									 token-validity-seconds="604800"/>
+																
+	<!-- 접근제한 예외발생시 특정URI 지정하거나 AccessDenied Handler를 직접구현한다 -->
+	<sec:access-denied-handler ref="customAccessDenyed"/>
+																	
+	
+</sec:http>
+
+<sec:authentication-manager>
+	
+	<!-- userDetailsService 구현클래스 com.kh.myapp.member.service.MemberSvcImpl -->
+	<sec:authentication-provider user-service-ref="memberSvcImpl">
+	
+	<sec:password-encoder ref="customPasswordEncoder"/>
+	
+	</sec:authentication-provider>
+</sec:authentication-manager>
+
+</beans>
