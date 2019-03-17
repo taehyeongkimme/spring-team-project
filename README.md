@@ -1,4 +1,4 @@
-# spring-team-project
+# 얼리어먹터(EARLY A MUKTER)
 
 Spring Framework/Spring Security로 구현한 리뷰게시판 팀 프로젝트입니다.
 
