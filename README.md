@@ -1,6 +1,6 @@
-# 얼리어먹터(EARLY A MUKTER)
+# Spring-team-project
 
-Spring Framework/Spring Security로 구현한 리뷰게시판 팀 프로젝트입니다.
+Spring Framework/Spring Security로 구현한 리뷰게시판 얼리어먹터(EARLY A MUKTER)입니다.
 
  기능
 ------------------
@@ -29,4 +29,3 @@ https://youtu.be/6XmKY9j9rEg
  보완계획
 ------------------
 * 지도API 
-<hr/>
